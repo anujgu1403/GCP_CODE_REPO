@@ -12,47 +12,67 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * @author Anuj Kumar
+ * 
+ *         This class is domain to create User table
+ */
 @Entity
 public class User {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Getter @Setter private Long userId;
-	
-	@NotBlank(message="LogonId is required")	
-	@Column(unique=true)
-	@Getter @Setter private String logonId;
-	
-	@NotBlank(message="Password is required")
-	@Size(min=8, max=12, message="Please use 8 to 12 characters")	
-	@Getter @Setter private String password;	
-	
-	@JsonFormat(pattern="yyyy-mm-dd")
-	@Getter @Setter private Date created_At;
-	
-	@JsonFormat(pattern="yyyy-mm-dd")
-	@Getter @Setter private Date updated_At;
-	
+	@Getter
+	@Setter
+	private Long userId;
+
+	@NotBlank(message = "LogonId is required")
+	@Column(unique = true)
+	@Getter
+	@Setter
+	private String logonId;
+
+	@NotBlank(message = "Password is required")
+	@Size(min = 8, max = 12, message = "Please use 8 to 12 characters")
+	@Getter
+	@Setter
+	private String password;
+
+	@JsonFormat(pattern = "yyyy-mm-dd")
+	@Getter
+	@Setter
+	private Date created_At;
+
+	@JsonFormat(pattern = "yyyy-mm-dd")
+	@Getter
+	@Setter
+	private Date updated_At;
+
 	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@Getter @Setter private Address address;
-	
+	@Getter
+	@Setter
+	@Valid
+	private Address address;
+
 	@PrePersist
-	protected void onCreate(){
+	protected void onCreate() {
 		this.created_At = new Date();
 	}
-	
+
 	@PreUpdate
-	protected void onUpdate(){
+	protected void onUpdate() {
 		this.updated_At = new Date();
 	}
-	public User(){
-		
+
+	public User() {
+
 	}
 
 	public Long getUserId() {
@@ -101,5 +121,15 @@ public class User {
 
 	public void setAddress(Address address) {
 		this.address = address;
-	}		
+	}
+
+	@Override
+	public String toString() {
+		return "logonId: " + logonId + " firstName:" + getAddress().getFirstName() + " lastName: "
+				+ getAddress().getLastName() + " email: " + getAddress().getEmail() + " phoneNumber: "
+				+ getAddress().getPhoneNumber() + " address1: " + getAddress().getAddress1() + " address2: "
+				+ getAddress().getAddress2() + " city: " + getAddress().getCity() + " state: " + getAddress().getState()
+				+ " country: " + getAddress().getCountry() + " zipCode: " + getAddress().getZipCode() + " addressType: "
+				+ getAddress().getAddressType() + " status: " + getAddress().getStatus();
+	}
 }
