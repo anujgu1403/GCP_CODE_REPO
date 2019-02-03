@@ -15,6 +15,12 @@ import javax.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
+
+/**
+ * @author Anuj Kumar
+ * 
+ * This class is domain to create address table
+ */
 @Entity
 public class Address {
 
