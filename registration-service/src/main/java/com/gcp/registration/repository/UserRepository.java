@@ -1,5 +1,6 @@
 package com.gcp.registration.repository;
 
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 import com.gcp.registration.domain.User;
@@ -12,5 +13,12 @@ import com.gcp.registration.domain.User;
 @Repository
 public interface UserRepository extends CrudRepository<User, Long>{
 	
-	public User findUserByLogonId(String logonId); 
+	/**
+	 * This method is used to authenticate the user login in DB
+	 * 
+	 * @param userDetail
+	 * @return User
+	 */
+	@Query("select u from User u where u.logonId = :logonId and u.password = :password")
+	public User findUserByLogonIdAndPassword(String logonId, String password); 
 }
