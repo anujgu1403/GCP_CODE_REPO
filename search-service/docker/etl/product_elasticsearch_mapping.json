@@ -1,0 +1,151 @@
+{
+  "mappings": {
+    "product": {
+      "properties": {
+        "id": {
+          "type": "text",
+          "index": false,
+          "doc_values": false,
+          "fields": {
+            "keyword": {
+              "type": "keyword"
+            }
+          }
+        },
+        "name": {
+          "type": "text",
+          "fields": {
+            "keyword": {
+              "type": "keyword"
+            }
+          }
+        },
+        "shortDescription": {
+          "type": "text"
+        },
+        "longDescription": {
+          "type": "text"
+        },
+        "canonicalUrl": {
+          "type": "text",
+          "index": false,
+          "doc_values": false
+        },
+        "brand": {
+          "type": "keyword"
+        },
+        "skuCode": {
+          "type": "keyword",
+          "doc_values": false
+        },
+        "shipEnabled": {
+          "type": "boolean"
+        },
+        "taxExempt": {
+          "type": "boolean"
+        },
+        "taxCategory": {
+          "type": "keyword"
+        },
+        "inventoryManaged": {
+          "type": "boolean"
+        },
+        "stockQuantity": {
+          "type": "integer"
+        },
+        "price": {
+          "type": "double"
+        },
+        "currencyCode": {
+          "type": "text",
+          "index": false,
+          "doc_values": false
+        },
+        "weight": {
+          "type": "keyword"
+        },
+        "length": {
+          "type": "keyword"
+        },
+        "width": {
+          "type": "keyword"
+        },
+        "height": {
+          "type": "keyword"
+        },
+        "category1": {
+          "type": "keyword"
+        },
+        "category2": {
+          "type": "keyword"
+        },
+        "attributes": {
+          "type": "nested",
+          "properties": {
+            "id": {
+              "type": "text",
+              "index": false,
+              "doc_values": false
+            },
+            "name": {
+              "type": "keyword"
+            },
+            "value": {
+              "type": "text"
+            },
+            "required": {
+              "type": "boolean",
+              "index": false,
+              "doc_values": false
+            },
+            "textPrompt": {
+              "type": "text",
+              "index": false,
+              "doc_values": false
+            },
+            "attrType": {
+              "type": "text",
+              "index": false,
+              "doc_values": false
+            },
+            "allowFiltering": {
+              "type": "boolean"
+            },
+            "colorSquaresRgb": {
+              "type": "text",
+              "index": false,
+              "doc_values": false
+            },
+            "attrOrder": {
+              "type": "integer"
+            },
+            "attrSubOrder": {
+              "type": "integer"
+            }
+          }
+        },
+        "features": {
+          "type": "text"
+        },
+        "media": {
+          "type": "object",
+          "enabled": false,
+          "properties": {
+            "tag": {
+              "type": "text"
+            },
+            "thumbnailImage": {
+              "type": "text"
+            },
+            "mediumImage": {
+              "type": "text"
+            },
+            "largeImage": {
+              "type": "text"
+            }
+          }
+        }
+      }
+    }
+  }
+}

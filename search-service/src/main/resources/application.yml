@@ -1,0 +1,14 @@
+spring:
+  data:
+    elasticsearch:
+      cluster-name: elasticsearch
+      cluster-nodes: "localhost:9300"
+
+keyword-search.allowed-pattern: "[a-z0-9_\\s\\/,\\.]+"
+
+---
+spring:
+  profiles: docker
+  data:
+    elasticsearch:
+      cluster-nodes: "elasticsearch:9300"
