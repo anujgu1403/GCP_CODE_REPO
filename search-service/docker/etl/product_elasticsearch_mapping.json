@@ -1,6 +1,6 @@
 {
   "mappings": {
-    "product": {
+    "_doc": {
       "properties": {
         "id": {
           "type": "text",
