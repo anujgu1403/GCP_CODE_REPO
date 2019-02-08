@@ -8,7 +8,7 @@ import org.springframework.data.elasticsearch.annotations.Document;
 import java.util.List;
 
 
-@Document(indexName = "product_catalog")
+@Document(indexName = "product_catalog", type = "_doc")
 @JsonIgnoreProperties(ignoreUnknown = true)
 @NoArgsConstructor
 @AllArgsConstructor
