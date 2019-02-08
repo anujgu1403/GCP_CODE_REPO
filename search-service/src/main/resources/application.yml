@@ -4,7 +4,7 @@ spring:
       cluster-name: elasticsearch
       cluster-nodes: "localhost:9300"
 
-keyword-search.allowed-pattern: "[a-z0-9_\\s\\/,\\.]+"
+keyword-search.allowed-pattern: "[^*?]+"
 
 ---
 spring:
