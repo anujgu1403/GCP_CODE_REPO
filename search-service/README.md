@@ -29,7 +29,7 @@
     http://localhost:8100/keywordsearch?keyword=laptop
 
 ##### Note: 
-    1. Keyword cannot be empty and should match the regex [a-z0-9_\s\/,\.]+
+    1. Keyword cannot be empty and should match the regex [^*?]+
     2. Failing above rule would result in status 500 with error 
 
 #### Guided search:  Category based search
@@ -50,14 +50,14 @@
 ### Command to build docker image:
 
 #### Use one of below commands  to genetate docker image for search-service application.
-    1.	Using docker-compose, execute below commands from project root
+    1. Using docker-compose, execute below commands from project root
         a. ./gradlew clean build
         b. docker-compose -f ./docker/docker-compose.yml build search-service
-    2.	Using Dockerfile. Execute below commands from project root
+    2. Using Dockerfile. Execute below commands from project root
         a. ./gradlew clean build
         b. docker build .
-        Note: do not forget DOT in command 2.b command in the end
-    3.	Using shell script (verified only in OSX)
+        `Note: do not forget DOT in command 2.b command in the end`
+    3. Using shell script (verified only in OSX)
         a. Execute start.sh under docker directory
 
 
