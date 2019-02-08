@@ -41,6 +41,7 @@ public class SearchRepository {
     public SearchResult searchByKeyword(String keyword) {
         SearchQuery searchQuery = withDefaultAggregations(new NativeSearchQueryBuilder()
                 .withQuery(multiMatchQuery(keyword)
+                        .field("id.keyword")
                         .field("name")
                         .field("brand")
                         .field("shortDescription")
