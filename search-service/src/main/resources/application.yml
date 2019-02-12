@@ -6,6 +6,7 @@ spring:
 
 keyword-search.allowed-pattern: "[^*?]+"
 
+
 ---
 spring:
   profiles: docker

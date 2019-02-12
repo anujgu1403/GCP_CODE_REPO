@@ -1,6 +1,8 @@
 package com.gcp.demo.service;
 
 import com.gcp.demo.exceptions.InvalidInputException;
+import com.gcp.demo.model.FilterOptions;
+import com.gcp.demo.model.Product;
 import com.gcp.demo.model.SearchResult;
 import com.gcp.demo.repository.SearchRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.util.regex.Matcher;
+import java.util.Optional;
 import java.util.regex.Pattern;
 
 @Service
@@ -23,20 +25,28 @@ public class SearchService {
     }
 
 
-    public SearchResult searchByKeyword(String keyword) throws InvalidInputException {
+    public SearchResult searchByKeyword(String keyword, final Optional<FilterOptions> filterOptions) throws InvalidInputException {
         if (keyword != null && allowedPattern.matcher(keyword).matches()) {
-            return repository.searchByKeyword(keyword);
+            return repository.searchByKeyword(keyword, filterOptions);
         } else {
             throw new InvalidInputException("Keyword: '" + keyword + "' contains invalid characters or empty");
         }
     }
 
-    public SearchResult searchByCategory(String category1, String category2) throws InvalidInputException {
+    public SearchResult searchByCategory(String category1, String category2, final Optional<FilterOptions> filterOptions) throws InvalidInputException {
         if (!StringUtils.isEmpty(category1)) {
-            return repository.searchByCategory(category1, category2);
+            return repository.searchByCategory(category1, category2, filterOptions);
         } else {
             throw new InvalidInputException("Category1 should not be empty");
         }
 
+    }
+
+    public Product getProduct(String productId) throws InvalidInputException{
+        if (!StringUtils.isEmpty(productId)) {
+            return repository.getProduct(productId);
+        } else {
+            throw new InvalidInputException("ProductId should not be empty");
+        }
     }
 }

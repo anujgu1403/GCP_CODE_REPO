@@ -5,10 +5,6 @@ import com.gcp.demo.model.Facet;
 import com.gcp.demo.model.Product;
 import com.gcp.demo.model.SearchResult;
 import com.gcp.demo.service.SearchService;
-import org.elasticsearch.action.search.SearchResponse;
-import org.hamcrest.Matchers;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -21,7 +17,6 @@ import java.util.Collections;
 import static org.hamcrest.Matchers.*;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.Assert.*;
-import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -42,8 +37,8 @@ public class SearchControllerTest {
                 Facet.builder().name("facet1").buckets(Collections.singletonMap("bucket1", 1L)).build(),
                 Facet.builder().name("facet2").buckets(Collections.singletonMap("bucket2", 1L)).build()
         ));
-        when(mockService.searchByKeyword("a")).thenReturn(mockResponse);
-        SearchResult actual = controller.keywordsearch("a");
+        when(mockService.searchByKeyword(eq("a"), any())).thenReturn(mockResponse);
+        SearchResult actual = controller.executeKeywordSearch("a", null);
         assertThat(actual.getTotal(), equalTo(1L));
         assertThat(actual.getProducts().get(0).getId(), equalTo("1"));
         assertThat(actual.getFacets().get(0).getName(), equalTo("facet1"));
@@ -54,23 +49,23 @@ public class SearchControllerTest {
 
     @Test(expected = InvalidInputException.class)
     public void shouldThrowInvalidInputExceptionOnKeyWordSearchWhenKeywordContainsSTAR() throws Exception {
-        when(mockService.searchByKeyword(anyString())).thenThrow(new InvalidInputException("Expected exception from testcase"));
-        controller.keywordsearch("a*");
-        verify(mockService, times(1)).searchByKeyword("a*");
+        when(mockService.searchByKeyword(anyString(), any())).thenThrow(new InvalidInputException("Expected exception from testcase"));
+        controller.executeKeywordSearch("a*", null);
+        verify(mockService, times(1)).searchByKeyword("a*", null);
     }
 
     @Test(expected = InvalidInputException.class)
     public void shouldThrowInvalidInputExceptionOnKeyWordSearchWhenKeywordNull() throws Exception {
-        when(mockService.searchByKeyword(any())).thenThrow(new InvalidInputException("Expected exception from testcase"));
-        controller.keywordsearch(null);
-        verify(mockService, times(1)).searchByKeyword(null);
+        when(mockService.searchByKeyword(any(), any())).thenThrow(new InvalidInputException("Expected exception from testcase"));
+        controller.executeKeywordSearch(null, null);
+        verify(mockService, times(1)).searchByKeyword(null, null);
     }
 
     @Test(expected = InvalidInputException.class)
     public void shouldThrowInvalidInputExceptionOnKeyWordSearchWhenKeywordEmpty() throws Exception {
-        when(mockService.searchByKeyword(anyString())).thenThrow(new InvalidInputException("Expected exception from testcase"));
-        controller.keywordsearch("");
-        verify(mockService, times(1)).searchByKeyword("a*");
+        when(mockService.searchByKeyword(anyString(), any())).thenThrow(new InvalidInputException("Expected exception from testcase"));
+        controller.executeKeywordSearch("", null);
+        verify(mockService, times(1)).searchByKeyword("a*", null);
     }
 
     @Test
@@ -84,8 +79,8 @@ public class SearchControllerTest {
                 Facet.builder().name("facet1").buckets(Collections.singletonMap("bucket1", 1L)).build(),
                 Facet.builder().name("facet2").buckets(Collections.singletonMap("bucket2", 1L)).build()
         ));
-        when(mockService.searchByCategory("a", "b")).thenReturn(mockResponse);
-        SearchResult actual = controller.guidedSearch("a", "b");
+        when(mockService.searchByCategory(eq("a"), eq("b"), any())).thenReturn(mockResponse);
+        SearchResult actual = controller.executeGuidedSearch("a", "b",null);
         assertThat(actual.getTotal(), equalTo(1L));
         assertThat(actual.getProducts().get(0).getId(), equalTo("1"));
         assertThat(actual.getFacets().get(0).getName(), equalTo("facet1"));
@@ -105,8 +100,8 @@ public class SearchControllerTest {
                 Facet.builder().name("facet1").buckets(Collections.singletonMap("bucket1", 1L)).build(),
                 Facet.builder().name("facet2").buckets(Collections.singletonMap("bucket2", 1L)).build()
         ));
-        when(mockService.searchByCategory("a", null)).thenReturn(mockResponse);
-        SearchResult actual = controller.guidedSearch("a", null);
+        when(mockService.searchByCategory(eq("a"), any(), any())).thenReturn(mockResponse);
+        SearchResult actual = controller.executeGuidedSearch("a", null, null);
         assertThat(actual.getTotal(), equalTo(1L));
         assertThat(actual.getProducts().get(0).getId(), equalTo("1"));
         assertThat(actual.getFacets().get(0).getName(), equalTo("facet1"));
@@ -126,8 +121,8 @@ public class SearchControllerTest {
                 Facet.builder().name("facet1").buckets(Collections.singletonMap("bucket1", 1L)).build(),
                 Facet.builder().name("facet2").buckets(Collections.singletonMap("bucket2", 1L)).build()
         ));
-        when(mockService.searchByCategory("a", "")).thenReturn(mockResponse);
-        SearchResult actual = controller.guidedSearch("a", "");
+        when(mockService.searchByCategory(eq("a"), eq(""), any())).thenReturn(mockResponse);
+        SearchResult actual = controller.executeGuidedSearch("a", "", null);
         assertThat(actual.getTotal(), equalTo(1L));
         assertThat(actual.getProducts().get(0).getId(), equalTo("1"));
         assertThat(actual.getFacets().get(0).getName(), equalTo("facet1"));
@@ -138,22 +133,22 @@ public class SearchControllerTest {
 
     @Test(expected = InvalidInputException.class)
     public void shouldThrowInvalidInputExceptionOnGuidedSearchWhenCategory1Empty() throws Exception {
-        when(mockService.searchByCategory(eq(""), anyString())).thenThrow(new InvalidInputException("Expected exception from testcase"));
-        controller.guidedSearch("", "X");
-        verify(mockService, times(1)).searchByCategory("", "X");
+        when(mockService.searchByCategory(eq(""), anyString(), any())).thenThrow(new InvalidInputException("Expected exception from testcase"));
+        controller.executeGuidedSearch("", "X", null);
+        verify(mockService, times(1)).searchByCategory("", "X", null);
     }
 
     @Test(expected = InvalidInputException.class)
     public void shouldThrowInvalidInputExceptionOnGuidedSearchWhenCategory1Null() throws Exception {
-        when(mockService.searchByCategory(any(), anyString())).thenThrow(new InvalidInputException("Expected exception from testcase"));
-        controller.guidedSearch(null, "X");
-        verify(mockService, times(1)).searchByCategory(null, "X");
+        when(mockService.searchByCategory(any(), anyString(), any())).thenThrow(new InvalidInputException("Expected exception from testcase"));
+        controller.executeGuidedSearch(null, "X", null);
+        verify(mockService, times(1)).searchByCategory(null, "X", null);
     }
 
     @Test(expected = InvalidInputException.class)
     public void shouldThrowInvalidInputExceptionOnGuidedSearchWhenCategoriesNull() throws Exception {
-        when(mockService.searchByCategory(any(), any())).thenThrow(new InvalidInputException("Expected exception from testcase"));
-        controller.guidedSearch(null, null);
-        verify(mockService, times(1)).searchByCategory(null, null);
+        when(mockService.searchByCategory(any(), any(), any())).thenThrow(new InvalidInputException("Expected exception from testcase"));
+        controller.executeGuidedSearch(null, null,null);
+        verify(mockService, times(1)).searchByCategory(null, null, null);
     }
 }

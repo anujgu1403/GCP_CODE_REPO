@@ -2,6 +2,7 @@ package com.gcp.demo.model;
 
 import lombok.*;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
 @NoArgsConstructor
 @AllArgsConstructor
@@ -10,5 +11,5 @@ import java.util.Map;
 @Builder
 public class Facet {
     private String name;
-    private Map<String, Long> buckets;
+    private LinkedHashMap<String, Long> buckets;
 }

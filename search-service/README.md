@@ -56,7 +56,7 @@
     2. Using Dockerfile. Execute below commands from project root
         a. ./gradlew clean build
         b. docker build .
-        Note: do not forget DOT in command 2.b command in the end
+        `Note: do not forget DOT in command 2.b command in the end`
     3. Using shell script (verified only in OSX)
         a. Execute start.sh under docker directory
 

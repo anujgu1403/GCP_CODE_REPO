@@ -12,19 +12,18 @@
             }
           }
         },
-        "name": {
+        "productName": {
           "type": "text",
-          "fields": {
-            "keyword": {
-              "type": "keyword"
-            }
-          }
+          "doc_values": false
         },
         "shortDescription": {
-          "type": "text"
+          "type": "text",
+          "doc_values": false
         },
         "longDescription": {
-          "type": "text"
+          "type": "text",
+          "index": "false",
+          "doc_values": false
         },
         "canonicalUrl": {
           "type": "text",
@@ -34,21 +33,9 @@
         "brand": {
           "type": "keyword"
         },
-        "skuCode": {
+        "skuId": {
           "type": "keyword",
           "doc_values": false
-        },
-        "shipEnabled": {
-          "type": "boolean"
-        },
-        "taxExempt": {
-          "type": "boolean"
-        },
-        "taxCategory": {
-          "type": "keyword"
-        },
-        "inventoryManaged": {
-          "type": "boolean"
         },
         "stockQuantity": {
           "type": "integer"
@@ -79,71 +66,30 @@
         "category2": {
           "type": "keyword"
         },
-        "attributes": {
-          "type": "nested",
-          "properties": {
-            "id": {
-              "type": "text",
-              "index": false,
-              "doc_values": false
-            },
-            "name": {
-              "type": "keyword"
-            },
-            "value": {
-              "type": "text"
-            },
-            "required": {
-              "type": "boolean",
-              "index": false,
-              "doc_values": false
-            },
-            "textPrompt": {
-              "type": "text",
-              "index": false,
-              "doc_values": false
-            },
-            "attrType": {
-              "type": "text",
-              "index": false,
-              "doc_values": false
-            },
-            "allowFiltering": {
-              "type": "boolean"
-            },
-            "colorSquaresRgb": {
-              "type": "text",
-              "index": false,
-              "doc_values": false
-            },
-            "attrOrder": {
-              "type": "integer"
-            },
-            "attrSubOrder": {
-              "type": "integer"
-            }
-          }
+        "image1": {
+          "type": "text",
+          "index": false,
+          "doc_values": false
         },
-        "features": {
-          "type": "text"
+        "image2": {
+          "type": "text",
+          "index": false,
+          "doc_values": false
         },
-        "media": {
-          "type": "object",
-          "enabled": false,
-          "properties": {
-            "tag": {
-              "type": "text"
-            },
-            "thumbnailImage": {
-              "type": "text"
-            },
-            "mediumImage": {
-              "type": "text"
-            },
-            "largeImage": {
-              "type": "text"
-            }
-          }
+        "image3": {
+          "type": "text",
+          "index": false,
+          "doc_values": false
+        },
+        "image4": {
+          "type": "text",
+          "index": false,
+          "doc_values": false
+        },
+        "image5": {
+          "type": "text",
+          "index": false,
+          "doc_values": false
         }
       }
     }
