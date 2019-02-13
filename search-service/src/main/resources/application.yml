@@ -1,8 +1,8 @@
 spring:
   data:
     elasticsearch:
-      cluster-name: elasticsearch
-      cluster-nodes: "localhost:9300"
+      cluster-name: elasticsearch-cluster
+      cluster-nodes: "35.227.17.246:9300"
 
 keyword-search.allowed-pattern: "[^*?]+"
 
@@ -12,4 +12,5 @@ spring:
   profiles: docker
   data:
     elasticsearch:
+      cluster-name: elasticsearch
       cluster-nodes: "elasticsearch:9300"
