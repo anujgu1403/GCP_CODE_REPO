@@ -1,6 +1,7 @@
 package com.gcp.demo.repository;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.gcp.demo.Constants;
 import com.gcp.demo.model.Facet;
 import com.gcp.demo.model.FilterOptions;
 import com.gcp.demo.model.Product;
@@ -17,6 +18,9 @@ import org.elasticsearch.search.aggregations.BucketOrder;
 import org.elasticsearch.search.aggregations.bucket.MultiBucketsAggregation;
 import org.elasticsearch.search.aggregations.bucket.range.RangeAggregationBuilder;
 import org.elasticsearch.search.aggregations.bucket.terms.TermsAggregationBuilder;
+import org.elasticsearch.search.sort.SortBuilder;
+import org.elasticsearch.search.sort.SortBuilders;
+import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.elasticsearch.core.*;
 import org.springframework.data.elasticsearch.core.query.GetQuery;
@@ -40,9 +44,10 @@ public class SearchRepository {
     @Autowired
     private ElasticsearchTemplate searchTemplate;
 
-    public SearchResult searchByKeyword(final String keyword, final Optional<FilterOptions> filterOptions) {
+    public SearchResult searchByKeyword(final String keyword, final Optional<FilterOptions> filterOptions, final Constants.SortBy sortBy) {
         SearchQuery searchQuery = withDefaultAggregations(new NativeSearchQueryBuilder()
                 .withQuery(prepareBaseQuery(keyword, filterOptions)))
+                .withSort(prepareSortOptions(sortBy))
                 .build();
 
         SearchResult result = performSearchOperation(searchQuery);
@@ -50,6 +55,27 @@ public class SearchRepository {
         List<Product> products = searchTemplate.queryForList(searchQuery, Product.class);
         result.setProducts(products);
         return result;
+    }
+
+    private SortBuilder prepareSortOptions(Constants.SortBy sortBy) {
+        SortBuilder sortBuilder = null;
+        switch (sortBy) {
+            case NAME_ASC:
+                sortBuilder = SortBuilders.fieldSort("productName.keyword").order(SortOrder.ASC);
+                break;
+            case NAME_DESC:
+                sortBuilder = SortBuilders.fieldSort("productName.keyword").order(SortOrder.DESC);
+                break;
+            case PRICE_LOW_2_HIGH:
+                sortBuilder = SortBuilders.fieldSort("price").order(SortOrder.ASC);
+                break;
+            case PRICE_HIGH_2_LOW:
+                sortBuilder = SortBuilders.fieldSort("price").order(SortOrder.DESC);
+                break;
+            default:
+                sortBuilder = SortBuilders.fieldSort("price").order(SortOrder.ASC);
+        }
+        return sortBuilder;
     }
 
     private QueryBuilder prepareBaseQuery(final String keyword, final Optional<FilterOptions> filterOptions) {
@@ -103,9 +129,9 @@ public class SearchRepository {
     }
 
 
-    public SearchResult searchByCategory(final String category1, final String category2, final Optional<FilterOptions> filterOptions) {
+    public SearchResult searchByCategory(final String category1, final String category2, final Optional<FilterOptions> filterOptions, final Constants.SortBy sortBy) {
         SearchQuery searchQuery = withDefaultAggregations(new NativeSearchQueryBuilder()
-                .withQuery(getCategoryMatchQuery(category1, category2, filterOptions))).build();
+                .withQuery(getCategoryMatchQuery(category1, category2, filterOptions))).withSort(prepareSortOptions(sortBy)).build();
 
         SearchResult result = performSearchOperation(searchQuery);
 

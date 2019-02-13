@@ -1,4 +1,18 @@
 {
+  "settings": {
+    "analysis": {
+      "normalizer": {
+        "custom_sort_normalizer": {
+          "type": "custom",
+          "char_filter": [],
+          "filter": [
+            "lowercase",
+            "asciifolding"
+          ]
+        }
+      }
+    }
+  },
   "mappings": {
     "_doc": {
       "properties": {
@@ -14,7 +28,13 @@
         },
         "productName": {
           "type": "text",
-          "doc_values": false
+          "doc_values": false,
+          "fields": {
+            "keyword": {
+              "type": "keyword",
+              "normalizer": "custom_sort_normalizer"
+            }
+          }
         },
         "shortDescription": {
           "type": "text",

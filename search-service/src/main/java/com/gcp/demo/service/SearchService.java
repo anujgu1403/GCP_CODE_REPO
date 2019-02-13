@@ -1,5 +1,6 @@
 package com.gcp.demo.service;
 
+import com.gcp.demo.Constants;
 import com.gcp.demo.exceptions.InvalidInputException;
 import com.gcp.demo.model.FilterOptions;
 import com.gcp.demo.model.Product;
@@ -25,17 +26,17 @@ public class SearchService {
     }
 
 
-    public SearchResult searchByKeyword(String keyword, final Optional<FilterOptions> filterOptions) throws InvalidInputException {
+    public SearchResult searchByKeyword(String keyword, final Optional<FilterOptions> filterOptions, final Constants.SortBy sortBy) throws InvalidInputException {
         if (keyword != null && allowedPattern.matcher(keyword).matches()) {
-            return repository.searchByKeyword(keyword, filterOptions);
+            return repository.searchByKeyword(keyword, filterOptions, sortBy);
         } else {
             throw new InvalidInputException("Keyword: '" + keyword + "' contains invalid characters or empty");
         }
     }
 
-    public SearchResult searchByCategory(String category1, String category2, final Optional<FilterOptions> filterOptions) throws InvalidInputException {
+    public SearchResult searchByCategory(String category1, String category2, final Optional<FilterOptions> filterOptions, final Constants.SortBy  sortBy) throws InvalidInputException {
         if (!StringUtils.isEmpty(category1)) {
-            return repository.searchByCategory(category1, category2, filterOptions);
+            return repository.searchByCategory(category1, category2, filterOptions, sortBy);
         } else {
             throw new InvalidInputException("Category1 should not be empty");
         }
